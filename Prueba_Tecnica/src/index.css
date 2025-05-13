@@ -1,4 +1,4 @@
-/* Tasks */
+/* Tareas */
 .dot {
   height: 12px;
   width: 12px;
@@ -38,7 +38,7 @@
 .green { background-color: green; }
 .orange { background-color: orange; }
 
-/*Modal*/
+/* Modal */
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -58,4 +58,14 @@
   max-width: 400px;
   width: 90%;
   padding: 24px;
+}
+
+
+/* Barra lateral */
+.category-item {
+  cursor: pointer;
+}
+
+.category-list li.active-category {
+  font-weight: bold;
 }

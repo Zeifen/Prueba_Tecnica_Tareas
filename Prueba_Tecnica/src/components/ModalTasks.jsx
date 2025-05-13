@@ -1,4 +1,6 @@
 import { useState } from "react";
+//SweetAlert2
+import Swal from 'sweetalert2';
 
 const ModalTasks = ({ onSave, onClose }) => {
   const [title, setTitle] = useState("");
@@ -6,6 +8,15 @@ const ModalTasks = ({ onSave, onClose }) => {
   const [description, setDescription] = useState("");
 
   const handleSave = () => {
+    if (title.trim() === "" || description.trim() === "") {
+    Swal.fire({
+      icon: "error",
+      title: "Campos vacíos",
+      text: "Por favor llena todos los campos antes de guardar.",
+      confirmButtonColor: "#0d6efd"
+    });
+    return;
+  }
     const newTask = {
       id: Date.now(),
       title,
@@ -14,6 +25,13 @@ const ModalTasks = ({ onSave, onClose }) => {
       completed: false
     };
     onSave(newTask);
+    Swal.fire({
+      icon: "success",
+      title: "¡Tarea creada!",
+      text: "La tarea fue guardada exitosamente.",
+      timer: 1500,
+      showConfirmButton: false
+  });
     setTitle("");
     setCategory("Categoría 1");
     setDescription("");
