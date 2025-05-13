@@ -6,6 +6,8 @@ const Tasks = () => {
 
     const [showModal, setShowModal] = useState(false);
     const [tasks, setTasks] = useState([]);
+    const [activeTab, setActiveTab] = useState("pendientes");
+
 
     const handleSaveTask = (newTask) => {
         const updatedTasks = [...tasks, newTask];
@@ -13,6 +15,15 @@ const Tasks = () => {
         localStorage.setItem("tasks", JSON.stringify(updatedTasks));
         setShowModal(false);
     };
+
+    const handleCompleteTask = (taskId) => {
+    const updatedTasks = tasks.map(task => 
+      task.id === taskId ? { ...task, completed: true } : task
+    );
+    setTasks(updatedTasks);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    };
+
 
     useEffect(() => {
         const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
@@ -55,26 +66,41 @@ const Tasks = () => {
               {/* Tabs */}
               <div className="container general-text">
                 <div className="btn-group mb-4" role="group">
-                    <button type="button" className="btn tab-active">Tareas Pendientes</button>
-                    <button type="button" className="btn">Tareas Finalizadas</button>
+                    <button type="button" className={`btn btn-outline-secondary ${activeTab === "pendientes" ? "active" : ""}`} onClick={() => setActiveTab("pendientes")}>Tareas Pendientes</button>
+                    <button type="button" className={`btn btn-outline-secondary ${activeTab === "finalizadas" ? "active" : ""}`} onClick={() => setActiveTab("finalizadas")}>Tareas Finalizadas</button>
                 </div>
               </div>
 
               {/* Task Cards */}
               <div className="row">
 
-                  {tasks.length === 0 ? (<p className="general-text">No tienes tareas</p>) : (tasks.map((task) => (
-                    <div className="col-md-6" key={task.id}>
-                    <div className="task-card" style={{ borderColor: categoryColors[task.category] }}>
-                        <h5>{task.title}</h5>
-                        <p>{task.description}</p>
-                        <div className="task-footer">
-                        <span className={`dot ${categoryColors[task.category]}`}></span>
-                        <button className="btn btn-success btn-sm">Finalizar tarea</button>
+                {tasks.filter(task => activeTab === "pendientes" ? !task.completed : task.completed).length === 0 ? (
+                  <p className="general-text">
+                    {activeTab === "pendientes" ? "No tienes tareas pendientes" : "No tienes tareas finalizadas"}
+                  </p>
+                ) : (
+                  tasks
+                    .filter(task => activeTab === "pendientes" ? !task.completed : task.completed)
+                    .map((task) => (
+                      <div className="col-md-6" key={task.id}>
+                        <div className="task-card" style={{ borderColor: categoryColors[task.category] }}>
+                          <h5>{task.title}</h5>
+                          <p>{task.description}</p>
+                          <div className="task-footer">
+                            <span className={`dot ${categoryColors[task.category]}`}></span>
+                            {!task.completed && (
+                              <button
+                                className="btn btn-success btn-sm"
+                                onClick={() => handleCompleteTask(task.id)}
+                              >
+                                Finalizar tarea
+                              </button>
+                            )}
+                          </div>
                         </div>
-                    </div>
-                    </div>
-                )))}
+                      </div>
+                    ))
+                )}
 
               </div>
             </div>

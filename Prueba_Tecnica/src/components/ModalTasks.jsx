@@ -11,6 +11,7 @@ const ModalTasks = ({ onSave, onClose }) => {
       title,
       category,
       description,
+      completed: false
     };
     onSave(newTask);
     setTitle("");
