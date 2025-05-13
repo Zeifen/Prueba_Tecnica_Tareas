@@ -1,5 +1,6 @@
 import ModalTasks from "../components/ModalTasks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { categoryColors } from "../objects/colors";
 
 const Tasks = () => {
 
@@ -7,9 +8,16 @@ const Tasks = () => {
     const [tasks, setTasks] = useState([]);
 
     const handleSaveTask = (newTask) => {
-        setTasks([...tasks, newTask]);
+        const updatedTasks = [...tasks, newTask];
+        setTasks(updatedTasks);
+        localStorage.setItem("tasks", JSON.stringify(updatedTasks));
         setShowModal(false);
     };
+
+    useEffect(() => {
+        const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        setTasks(savedTasks);
+    }, []);
 
     const handleCloseModal = () => {
     setShowModal(false);
@@ -54,49 +62,19 @@ const Tasks = () => {
 
               {/* Task Cards */}
               <div className="row">
-                <div className="col-md-6">
-                  <div className="task-card red-card">
-                    <h5>Tarea 1</h5>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam purus sapien...</p>
-                    <div className="task-footer">
-                      <span className="dot red"></span>
-                      <button className="btn btn-success btn-sm">Finalizar tarea</button>
-                    </div>
-                  </div>
-                </div>
 
-                <div className="col-md-6">
-                  <div className="task-card blue-card">
-                    <h5>Tarea 1</h5>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam purus sapien...</p>
-                    <div className="task-footer">
-                      <span className="dot blue"></span>
-                      <button className="btn btn-success btn-sm">Finalizar tarea</button>
+                  {tasks.length === 0 ? (<p className="general-text">No tienes tareas</p>) : (tasks.map((task) => (
+                    <div className="col-md-6" key={task.id}>
+                    <div className="task-card" style={{ borderColor: categoryColors[task.category] }}>
+                        <h5>{task.title}</h5>
+                        <p>{task.description}</p>
+                        <div className="task-footer">
+                        <span className={`dot ${categoryColors[task.category]}`}></span>
+                        <button className="btn btn-success btn-sm">Finalizar tarea</button>
+                        </div>
                     </div>
-                  </div>
-                </div>
-
-                <div className="col-md-6">
-                  <div className="task-card purple-card">
-                    <h5>Tarea 1</h5>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam purus sapien...</p>
-                    <div className="task-footer">
-                      <span className="dot purple"></span>
-                      <button className="btn btn-success btn-sm">Finalizar tarea</button>
                     </div>
-                  </div>
-                </div>
-
-                <div className="col-md-6">
-                  <div className="task-card orange-card">
-                    <h5>Tarea 1</h5>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam purus sapien...</p>
-                    <div className="task-footer">
-                      <span className="dot orange"></span>
-                      <button className="btn btn-success btn-sm">Finalizar tarea</button>
-                    </div>
-                  </div>
-                </div>
+                )))}
 
               </div>
             </div>

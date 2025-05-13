@@ -1,5 +1,4 @@
-/* src/index.css */
-
+/* Tasks */
 .dot {
   height: 12px;
   width: 12px;
@@ -32,12 +31,6 @@
 .category-list li {
   margin-bottom: 0.5rem;
 }
-
-.red-card { border-color: red; }
-.blue-card { border-color: blue; }
-.green-card { border-color: green; }
-.orange-card { border-color: orange; }
-.purple-card { border-color: purple; }
 
 .red { background-color: red; }
 .blue { background-color: blue; }
