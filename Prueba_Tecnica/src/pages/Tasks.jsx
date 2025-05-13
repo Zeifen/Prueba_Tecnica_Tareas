@@ -1,4 +1,20 @@
+import ModalTasks from "../components/ModalTasks";
+import { useState } from "react";
+
 const Tasks = () => {
+
+    const [showModal, setShowModal] = useState(false);
+    const [tasks, setTasks] = useState([]);
+
+    const handleSaveTask = (newTask) => {
+        setTasks([...tasks, newTask]);
+        setShowModal(false);
+    };
+
+    const handleCloseModal = () => {
+    setShowModal(false);
+    };
+
   return (
     <>
       <div className="container-fluid p-4">
@@ -6,7 +22,7 @@ const Tasks = () => {
         <div className="container">
           <div className="d-flex justify-content-between align-items-center mb-4">
             <h2>Mis tareas</h2>
-            <button className="btn btn-primary">Agregar tarea</button>
+            <button className="btn btn-primary" onClick={() => setShowModal(true)}>Agregar tarea</button>
           </div>
         </div>
 
@@ -87,6 +103,7 @@ const Tasks = () => {
           </div>
         </div>
       </div>
+      {showModal && <ModalTasks onSave={handleSaveTask} onClose={handleCloseModal} />}
     </>
   );
 };
